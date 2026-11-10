@@ -17,6 +17,7 @@ OPERATORS = {
     "/": operator.truediv,
 }
 
+
 def process_checkout(cart_items, tax_rate=0.05, receipts=None):
     """Return the total (with tax) for a cart and record the receipt."""
     if receipts is None:
@@ -35,6 +36,7 @@ def process_checkout(cart_items, tax_rate=0.05, receipts=None):
     )
     return total
 
+
 def apply_promo_code(code_str):
     """Apply a promo such as 'total * 0.9' to the running sales total."""
     match = PROMO_PATTERN.match(code_str)
@@ -42,6 +44,7 @@ def apply_promo_code(code_str):
         raise ValueError(f"Invalid promo code: {code_str!r}")
     symbol, number = match.groups()
     return OPERATORS[symbol](sales["total"], float(number))
+
 
 def update_stock(item, qty):
     """Report a stock update for an item, warning if it is unknown."""
@@ -51,15 +54,18 @@ def update_stock(item, qty):
     except KeyError:
         logging.warning("Cannot update stock: unknown item %r", item)
 
+
 def save_receipt_log(file="pos_log.txt"):
     """Append all receipt lines to the log file."""
     with open(file, "a", encoding="utf-8") as log_file:
         for line in receipt_lines:
             log_file.write(line + "\n")
 
+
 def print_sales():
     """Print the running sales total."""
     print(f"Sales so far: {sales['total']}")
+
 
 def main():
     """Run the demo checkout flow."""
@@ -76,6 +82,7 @@ def main():
         print(error)
     save_receipt_log()
     print_sales()
+
 
 if __name__ == "__main__":
     main()
